@@ -1,21 +1,26 @@
-import { useEffect } from 'react'
+import { MouseEvent, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
+    useDeleteProductMutation,
     useLazyGetSingleProductQuery,
     useUpdateProductMutation
 } from '@/api/products.api'
 import { TEditProduct } from '@/api/products.types'
 import { Field, Form, Formik } from 'formik'
+import { useToasts } from 'react-toast-notifications'
 import * as Yup from 'yup'
 
 const EditPage = () => {
     const { id } = useParams()
-
+    
     const [getSingleProduct, { data: product }] = useLazyGetSingleProductQuery()
-
+    
     const [updateProduct] = useUpdateProductMutation()
-
+    const [deleteProduct] = useDeleteProductMutation()
+    
     const navigate = useNavigate()
+    
+    const { addToast } = useToasts()
 
     const FormSchema = Yup.object().shape({
         title: Yup.string().required('Required.'),
@@ -41,6 +46,18 @@ const EditPage = () => {
         //NOTE - Можно редактировать клиентский стейт
 
         navigate('/products')
+    }
+
+    const handleProductOnDelete = async (e: MouseEvent) => {
+        if (product?.id) {
+            e.stopPropagation()
+            await deleteProduct(+product.id)
+
+            addToast('Product has been deleted!', {
+                autoDismiss: true,
+                appearance: 'error'
+            })
+        }
     }
 
     useEffect(() => {
@@ -106,9 +123,15 @@ const EditPage = () => {
                             <button
                                 type='submit'
                                 disabled={isSubmitting}
-                                className='p-2 font-semibold text-lg text-[#f2f1f6] bg-[#802c6e] rounded-lg transition-colors duration-300 hover:text-[#802c6e] hover:bg-black'
+                                className='p-3 font-semibold text-base md:text-xl text-[#f2f1f6] bg-[#802c6e] rounded-lg transition-colors duration-300 hover:text-[#802c6e] hover:bg-black'
                             >
                                 Edit the product
+                            </button>
+                            <button
+                                onClick={e => handleProductOnDelete(e)}
+                                className='p-2 text-[#f2f1f6] bg-[#802c6e] text-center text-sm md:text-lg font-bold rounded-lg transition-colors duration-300 hover:bg-red-700'
+                            >
+                                Delete the product
                             </button>
                         </Form>
                     )}

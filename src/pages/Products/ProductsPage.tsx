@@ -31,7 +31,7 @@ const ProductsPage = () => {
         } else {
             return myProducts.filter(product => !product.isPublished)
         }
-    }, [isSwitchChecked])
+    }, [isSwitchChecked, myProducts])
 
     const handleSwitchOnChanged = () => {
         setIsSwitchChecked(!isSwitchChecked)
@@ -52,7 +52,7 @@ const ProductsPage = () => {
                             list => (
                                 <button
                                     key={list}
-                                    className='px-4 py-2 text-[#f2f1f6] bg-[#802c6e] text-sm font-bold rounded-md transition-colors duration-300 hover:text-[#802c6e] hover:bg-black'
+                                    className='px-4 py-2 text-[#f2f1f6] bg-[#802c6e] text-sm md:text-base xl:text-xl font-bold rounded-md transition-colors duration-300 hover:text-[#802c6e] hover:bg-black'
                                     onClick={() =>
                                         handleOnListChanged(list as TList)
                                     }
@@ -62,7 +62,17 @@ const ProductsPage = () => {
                             )
                         )}
                     </div>
-
+                    {productList === 'My Products' && (
+                        <div className='flex flex-col items-center md:flex-row gap-1'>
+                            <h2>
+                                {isSwitchChecked ? 'Published' : 'Unpublished'}
+                            </h2>
+                            <ReactSwitch
+                                onChange={handleSwitchOnChanged}
+                                checked={isSwitchChecked}
+                            />
+                        </div>
+                    )}
                     <div
                         className={clsx('transition-all duration-500', {
                             '-translate-x-10 opacity-0 sm:translate-x-10':
@@ -71,7 +81,7 @@ const ProductsPage = () => {
                                 productList === 'Fake Store Products'
                         })}
                     >
-                        <h2 className='font-semibold text-center'>
+                        <h2 className='font-semibold text-center md:text-xl'>
                             Download products in quantity:
                         </h2>
                         <div className='flex justify-center mt-2 gap-3'>
@@ -88,15 +98,6 @@ const ProductsPage = () => {
                             ))}
                         </div>
                     </div>
-                    {productList === 'My Products' && (
-                        <>
-                            <h2>{isSwitchChecked ? 'Published' : 'Unpublished'}</h2>
-                            <ReactSwitch
-                                onChange={handleSwitchOnChanged}
-                                checked={isSwitchChecked}
-                            />
-                        </>
-                    )}
                 </div>
                 <div className='p-2'>
                     {products && productList === 'Fake Store Products' ? (

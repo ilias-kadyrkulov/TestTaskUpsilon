@@ -38,14 +38,21 @@ export const productsAPI = createApi({
                 body: JSON.stringify(params)
             })
         }),
-        updateProduct: builder.mutation<TProduct, TEditProduct>({
-            query: ({id, ...restParams}) => ({
+        updateProduct: builder.mutation<Pick<TProduct, 'id'>, TEditProduct>({
+            query: ({ id, ...restParams }) => ({
                 url: `/${id}`,
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(restParams)
+            }),
+            invalidatesTags: ['Products']
+        }),
+        deleteProduct: builder.mutation<Pick<TProduct, 'id'>, number>({
+            query: id => ({
+                url: `/${id}`,
+                method: 'DELETE'
             }),
             invalidatesTags: ['Products']
         })
@@ -56,5 +63,6 @@ export const {
     useLazyGetProductsQuery,
     useLazyGetSingleProductQuery,
     useAddNewProductMutation,
-    useUpdateProductMutation
+    useUpdateProductMutation,
+    useDeleteProductMutation
 } = productsAPI

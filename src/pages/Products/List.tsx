@@ -9,7 +9,7 @@ type TProps = {
 export const List: FC<TProps> = ({ products }) => {
     return (
         <>
-            <ul className='grid grid-cols-1 p-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
+            <ul className='grid grid-cols-1 p-2 divide-x-2 divide-y-2 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4'>
                 {products.map(product => (
                     <Item
                         key={product.description}

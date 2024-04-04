@@ -9,7 +9,13 @@ const myProductsSlice = createSlice({
     reducers: {
         setNewProduct: (state, action: PayloadAction<TProduct>) => {
             state.push(action.payload)
-        }
+        },
+        deleteMyProduct: (state, action: PayloadAction<string>) => {
+            const productForDeletion = state.find(
+                product => product.title === action.payload
+            )
+            return state.filter(product => product !== productForDeletion)
+        },
     }
 })
 
