@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TRequest, TResponse } from './products.types'
+import { TRequest, TResponse, TSingleProduct } from './products.types'
 
 export const productsAPI = createApi({
     reducerPath: 'productsApi',
@@ -14,8 +14,14 @@ export const productsAPI = createApi({
                     limit: limit
                 }
             })
+        }),
+        getSingleProduct: builder.query<TSingleProduct, number>({
+            query: id => ({
+                url: `/${id}`
+            })
         })
     })
 })
 
-export const { useGetProductsQuery } = productsAPI
+export const { useLazyGetProductsQuery, useLazyGetSingleProductQuery } =
+    productsAPI

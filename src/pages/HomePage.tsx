@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export const HomePage = () => {
     return (
-        <div className='flex-1 flex flex-col gap-5 justify-center items-center bg-[#d1c4a0]'>
+        <div className='flex-1 flex flex-col gap-5 justify-center items-center bg-[#d1c4a0] text-center'>
             <h1 className='text-lg md:text-2xl'>
                 Test task for the React Frontend position.
             </h1>

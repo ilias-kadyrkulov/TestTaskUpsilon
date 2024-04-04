@@ -8,7 +8,9 @@ const rootReducer = combineReducers({
 })
 
 export const store = configureStore({
-    reducer: rootReducer
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(productsAPI.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>
