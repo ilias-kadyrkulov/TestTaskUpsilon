@@ -1,0 +1,1 @@
+export type TList = 'Fake Store Products' | 'My Products'

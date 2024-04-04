@@ -1,11 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { TRequest, TResponse, TSingleProduct } from './products.types'
+import {
+    TCreateProduct,
+    TEditProduct,
+    TProduct,
+    TRequest,
+    TResponse
+} from './products.types'
 
 export const productsAPI = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.API_URL
     }),
+    tagTypes: ['Products'],
     endpoints: builder => ({
         getProducts: builder.query<TResponse, TRequest>({
             query: ({ limit = 8 }) => ({
@@ -13,15 +20,41 @@ export const productsAPI = createApi({
                 params: {
                     limit: limit
                 }
-            })
+            }),
+            providesTags: ['Products']
         }),
-        getSingleProduct: builder.query<TSingleProduct, number>({
+        getSingleProduct: builder.query<TProduct, number>({
             query: id => ({
                 url: `/${id}`
             })
+        }),
+        addNewProduct: builder.mutation<TProduct, TCreateProduct>({
+            query: params => ({
+                url: '',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            })
+        }),
+        updateProduct: builder.mutation<TProduct, TEditProduct>({
+            query: ({id, ...restParams}) => ({
+                url: `/${id}`,
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(restParams)
+            }),
+            invalidatesTags: ['Products']
         })
     })
 })
 
-export const { useLazyGetProductsQuery, useLazyGetSingleProductQuery } =
-    productsAPI
+export const {
+    useLazyGetProductsQuery,
+    useLazyGetSingleProductQuery,
+    useAddNewProductMutation,
+    useUpdateProductMutation
+} = productsAPI

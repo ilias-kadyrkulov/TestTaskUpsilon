@@ -12,7 +12,7 @@ const SingleProductPage = () => {
     }, [id])
 
     return (
-        <div className='flex-1 flex flex-col items-center justify-center p-5'>
+        <div className='flex-1 flex flex-col items-center justify-center p-5 bg-[#d1c4a0]'>
             {product && (
                 <>
                     <img

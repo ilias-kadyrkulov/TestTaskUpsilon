@@ -5,12 +5,16 @@ export type TRequest = {
 export type TResponse = TProduct[]
 
 export type TProduct = {
-    id: number
+    id?: number
     title: string
     price: number
+    description: string
     image: string
+    isPublished?: boolean
 }
 
-export type TSingleProduct = TProduct & {
-    description: string
+export type TCreateProduct = Omit<TProduct, 'id' | 'price' | 'image'> & {
+    price: number | null
 }
+
+export type TEditProduct = Omit<TProduct, | 'image'>
