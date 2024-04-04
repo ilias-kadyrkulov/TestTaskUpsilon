@@ -1,5 +1,5 @@
 const ProductEditionPage = () => {
-    return <div>ProductEditionPage</div>
+    return <div className="flex-1">ProductEditionPage</div>
 }
 
 export default ProductEditionPage

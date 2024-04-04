@@ -1,5 +1,5 @@
 const ProductDeletionPage = () => {
-    return <div>ProductDeletionPage</div>
+    return <div className="flex-1">ProductDeletionPage</div>
 }
 
 export default ProductDeletionPage
