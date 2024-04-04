@@ -20,7 +20,7 @@ export const Header = () => {
 
     return (
         <>
-            <header className='hidden md:flex justify-between items-center pt-3 pb-2 px-3 bg-[#802c6e]'>
+            <header className='hidden md:flex justify-between items-center pt-5 pb-4 px-3 bg-[#802c6e]'>
                 <Link
                     to='/'
                     className='inline-block'

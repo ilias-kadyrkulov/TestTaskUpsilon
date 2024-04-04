@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLazyGetProductsQuery } from '@/api/products.api'
 import { List } from './List'
 import { useTypedSelector } from '@/hooks/useTypedSelector'
@@ -6,6 +6,7 @@ import { useActions } from '@/hooks/useActions'
 import { TList } from '@/store/types/app.types'
 import ReactSwitch from 'react-switch'
 import clsx from 'clsx'
+import { useSortedProducts } from '@/hooks/useSortedProducts'
 
 const ProductsPage = () => {
     const productList = useTypedSelector(
@@ -25,19 +26,14 @@ const ProductsPage = () => {
         setActiveProductList(list)
     }
 
-    const sortedProducts = useMemo(() => {
-        if (isSwitchChecked) {
-            return myProducts.filter(product => product.isPublished)
-        } else {
-            return myProducts.filter(product => !product.isPublished)
-        }
-    }, [isSwitchChecked, myProducts])
+    const sortedProducts = useSortedProducts(isSwitchChecked, myProducts)
 
     const handleSwitchOnChanged = () => {
         setIsSwitchChecked(!isSwitchChecked)
     }
 
-    const [getProducts, { data: products }] = useLazyGetProductsQuery({})
+    const [getProducts, { data: products, isFetching }] =
+        useLazyGetProductsQuery({})
 
     useEffect(() => {
         getProducts({})
@@ -45,7 +41,12 @@ const ProductsPage = () => {
 
     return (
         <>
-            <div className='flex-1 bg-[#d1c4a0]'>
+            <div className='flex-1 relative bg-[#d1c4a0]'>
+                {isFetching && (
+                    <div className='absolute left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 text-xl'>
+                        Loading...
+                    </div>
+                )}
                 <div className='flex flex-col gap-2 sm:flex-row justify-between items-center p-2 overflow-x-clip'>
                     <div className='flex gap-2'>
                         {Array.from(['Fake Store Products', 'My Products']).map(
@@ -100,9 +101,10 @@ const ProductsPage = () => {
                     </div>
                 </div>
                 <div className='p-2'>
-                    {products && productList === 'Fake Store Products' ? (
+                    {products && productList === 'Fake Store Products' && (
                         <List products={products} />
-                    ) : (
+                    )}
+                    {productList === 'My Products' && (
                         <>
                             <h2 className='font-bold text-2xl text-center'>
                                 My Products
